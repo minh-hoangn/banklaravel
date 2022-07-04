@@ -14,17 +14,24 @@
 
     <div class="container">
         <h1>Bank transaction</h1>
-    <form>
+    <form action="{{ Route('event') }}" method="post">
+        @csrf
         <div class="form-group row">
-          <label for="accountId" class="col-sm-2 col-form-label">Account ID</label>
+          <label for="destination" class="col-sm-2 col-form-label">Destination</label>
           <div class="col-sm-10">
-            <input type="number" class="form-control" id="accountId" placeholder="Account ID" min="0" max="9999">
+            <input type="number" class="form-control" name="destination" id="destination" placeholder="Destination" min="0" max="9999">
           </div>
         </div>
         <div class="form-group row">
+            <label for="origin" class="col-sm-2 col-form-label">Origin</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="origin" id="origin" placeholder="Origin" min="0" max="9999">
+            </div>
+          </div>
+        <div class="form-group row">
           <label for="amount" class="col-sm-2 col-form-label">Amount</label>
           <div class="col-sm-10">
-            <input type="number" class="form-control" id="amount" placeholder="Amount" min="0" max="9999">
+            <input type="number" class="form-control" name="amount"  id="amount" placeholder="Amount" min="0" max="9999">
           </div>
         </div>
         <fieldset class="form-group">
@@ -32,19 +39,19 @@
             <legend class="col-form-label col-sm-2 pt-0">Type</legend>
             <div class="col-sm-10">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="type" id="type1" value="option1" checked>
+                <input class="form-check-input" type="radio" name="type" id="deposit" value="deposit" checked>
                 <label class="form-check-label" for="type1">
                   Deposit
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="type" id="type2" value="option2">
+                <input class="form-check-input" type="radio" name="type" id="withdraw" value="withdraw">
                 <label class="form-check-label" for="type2">
                   Withdraw
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="type" id="type3" value="option3">
+                <input class="form-check-input" type="radio" name="type" id="transfer" value="transfer">
                 <label class="form-check-label" for="type3">
                   Transfer
                 </label>
@@ -60,13 +67,14 @@
         </div>
       </form>
 
-
-        <div class="form-group row">
-                <button type="submit" class="btn btn-primary col-sm-2">Search</button>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="search" placeholder="Search" >
-            </div>
+      <form action="" method="get">
+        @csrf
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="search" placeholder="Search" >
+            <button type="submit" class="btn btn-primary col-sm-2">Search</button>
         </div>
+
+      </form>
 
 
       <table class="table">

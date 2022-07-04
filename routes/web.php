@@ -22,3 +22,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/balance', [AccountController::class, 'getBalance']);
+Route::post('/event', [AccountController::class, 'createAccountBalance'])->name('event');
