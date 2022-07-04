@@ -17,10 +17,10 @@ class AccountController extends Controller
         $reset =  $this->accountService->reset();
 
         if($reset){
-            $message = "OK";
+            $message = ["message"=>"ok"];
             return response($message, 200);
         } else {
-            $message = 0;
+            $message = ["message"=>"Not found"];
             return response($message, 404);
         }
     }
@@ -28,11 +28,16 @@ class AccountController extends Controller
     public function getBalance(Request $request)
     {
         $result = $this->accountService->getBalance((int)$request->account_id);
+
         if($result) {
-            $message = $result->balance;
-            return response($message, 200);
+            // dd($result->getContent());
+            if($result->status() == 200) {
+                return view('welcome')->with('result',json_decode($result->getContent()));
+            }
+            // return response($message, 200);
+
         } else {
-            $message = 0;
+            $message = ["message"=>"Not found"];
             return response($message, 404);
         }
     }
@@ -82,10 +87,12 @@ class AccountController extends Controller
                 //201 {"origin": {"id":"100", "balance":0}, "destination": {"id":"300", "balance":15}}
             }
             else {
-                return response(0, 404);
+                $message = ["message"=>"Not found"];
+                return response($message, 404);
             }
         } else {
-            return response(0, 404);
+            $message = ["message"=>"Not found"];
+            return response($message, 404);
         }
     }
 

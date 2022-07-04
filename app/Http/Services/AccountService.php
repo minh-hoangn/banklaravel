@@ -14,7 +14,15 @@ class AccountService
 
     public function getBalance($accountId)
     {
-        return Account::find($accountId);
+        if($accountId) {
+            $accounts = Account::where('id', $accountId)->get();
+            // dd(gettype($result));
+            return response($accounts, 200);
+            // return Account::where('id', $accountId)->get();
+        } else {
+            $accounts = Account::get();
+            return response($accounts, 200);
+        }
     }
 
     public function createAccountBalance($request)
