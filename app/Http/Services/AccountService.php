@@ -16,7 +16,7 @@ class AccountService
     {
         return Account::when(!empty($accountId), function($sql) use ($accountId) {
             return $sql->where('id', $accountId);
-        })->paginate(5);
+        })->simplePaginate(5);
     }
     /**Tạo account với số dư, nộp tiền, rút tiền, chuyển tiền */
     public function createAccountBalance($request)
@@ -68,7 +68,8 @@ class AccountService
                 'data'=>$accountOrigin
             ];
         } else {
-            return null;
+            $errorMsg = "Số tiền phải lớn hơn 0 và nhỏ hơn số dư hiện tại!";
+            return $errorMsg;
         }
     }
 

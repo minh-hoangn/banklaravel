@@ -17,6 +17,15 @@
 
     <div class="container">
         <h1><a href="/balance">Bank transaction</a></h1>
+        {{-- {@dd(Session::get('errorMsg')) --}}
+        {{-- @dd($errorMsg) --}}
+        {{-- @if ($errorMsg->any())
+        <div class="alert alert-danger">
+            <ul>
+                <li>{{ $errorMsg }}</li>
+            </ul>
+        </div>
+        @endif --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -40,19 +49,19 @@
         <div class="form-group row">
           <label for="destination" class="col-sm-2 col-form-label">Destination</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="destination" id="destination" placeholder="Destination" min="0" disabled >
+            <input type="number" class="form-control" name="destination" id="destination" placeholder="Destination" min="1" max="99999999999999999999" disabled >
           </div>
         </div>
         <div class="form-group row">
             <label for="origin" class="col-sm-2 col-form-label">Origin</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="origin" id="origin" placeholder="Origin" min="0" disabled>
+              <input type="number" class="form-control" name="origin" id="origin" placeholder="Origin" min="1" max="99999999999999999999" disabled>
             </div>
           </div>
         <div class="form-group row">
           <label for="amount" class="col-sm-2 col-form-label">Amount</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="amount"  id="amount" placeholder="Amount" min="0" disabled>
+            <input type="number" class="form-control" name="amount"  id="amount" placeholder="Amount" min="0" max="99999999999" disabled>
           </div>
         </div>
         <fieldset class="form-group">
@@ -132,6 +141,9 @@ $("input:radio").click(function() {
         //set input enable
         $("#destination").prop('disabled', false);
         $("#amount").prop('disabled', false);
+        //set input required
+        $("#destination").prop('required', true);
+        $("#amount").prop('required', true);
         //set input disable
         $("#origin").prop('disabled', true);
     }
@@ -139,6 +151,9 @@ $("input:radio").click(function() {
         //set input enable
         $("#origin").prop('disabled', false);
         $("#amount").prop('disabled', false);
+        //set input required
+        $("#origin").prop('required', true);
+        $("#amount").prop('required', true);
         //set input disable
         $("#destination").prop('disabled', true);
     }
@@ -147,6 +162,10 @@ $("input:radio").click(function() {
         $("#destination").prop('disabled', false);
         $("#origin").prop('disabled', false);
         $("#amount").prop('disabled', false);
+        //set input required
+        $("#destination").prop('required', true);
+        $("#origin").prop('required', true);
+        $("#amount").prop('required', true);
     }
   });
 </script>

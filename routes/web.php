@@ -8,8 +8,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 //reset data trong table accounts
-Route::post('/reset', [AccountController::class, 'resetAccount']);
+Route::post('/reset', [AccountController::class, 'resetAccount'])->name('reset');
 //get account id và balance
-Route::get('/balance', [AccountController::class, 'getBalance']);
+Route::get('/balance', [AccountController::class, 'getBalance'])->name('balance');
 //tạo account, nộp tiền, rút tiền và chuyển tiền
 Route::post('/event', [AccountController::class, 'createAccountBalance'])->name('event');
