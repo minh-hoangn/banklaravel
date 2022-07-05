@@ -23,8 +23,6 @@
                 </ul>
             </div>
         @endif
-
-
         <form action="/reset" method="post">
             @csrf
             <div class="form-group row">
@@ -33,6 +31,7 @@
                 </div>
               </div>
         </form>
+        <hr></hr>
     <form action="{{ Route('event') }}" method="post">
         @csrf
         <div class="form-group row">
@@ -85,7 +84,7 @@
           </div>
         </div>
       </form>
-
+      <hr></hr>
       <form action="/balance" method="get">
         <div class="row">
             <div class="col-sm-10">

@@ -13,12 +13,15 @@ class AccountController extends Controller
         $this->accountService = $accountService;
     }
 
+    /**Reset data table accounts */
     public function resetAccount()
     {
         $this->accountService->reset();
         return redirect('/balance');
 
     }
+
+    /**Get data account return view */
     public function getBalance(Request $request)
     {
         $result = $this->accountService->getBalance($request->account_id);
@@ -29,12 +32,11 @@ class AccountController extends Controller
         }
     }
 
+    /**Tạo account, nộp tiền, rút tiền, chuyển tiền */
     public function createAccountBalance(StoreAccountRequest  $request)
     {
-        $result = $this->accountService->createAccountBalance($request);
-
-            return redirect('/balance');
-
+        $this->accountService->createAccountBalance($request);
+        return redirect('/balance');
     }
 
 }
