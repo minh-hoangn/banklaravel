@@ -7,6 +7,9 @@
     <title>Bank</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
 </head>
 <body>
 <style></style>
@@ -32,24 +35,24 @@
               </div>
         </form>
         <hr></hr>
-    <form action="{{ Route('event') }}" method="post">
+    <form action="{{ Route('event') }}" method="post" name="balanceForm" id="balanceForm">
         @csrf
         <div class="form-group row">
           <label for="destination" class="col-sm-2 col-form-label">Destination</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="destination" id="destination" placeholder="Destination" min="0" >
+            <input type="text" class="form-control" name="destination" id="destination" placeholder="Destination" min="0" disabled >
           </div>
         </div>
         <div class="form-group row">
             <label for="origin" class="col-sm-2 col-form-label">Origin</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="origin" id="origin" placeholder="Origin" min="0" >
+              <input type="text" class="form-control" name="origin" id="origin" placeholder="Origin" min="0" disabled>
             </div>
           </div>
         <div class="form-group row">
           <label for="amount" class="col-sm-2 col-form-label">Amount</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="amount"  id="amount" placeholder="Amount" min="0" >
+            <input type="text" class="form-control" name="amount"  id="amount" placeholder="Amount" min="0" disabled>
           </div>
         </div>
         <fieldset class="form-group">
@@ -57,7 +60,7 @@
             <legend class="col-form-label col-sm-2 pt-0">Type</legend>
             <div class="col-sm-10">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="type" id="deposit" value="deposit" checked>
+                <input class="form-check-input" type="radio" name="type" id="deposit" value="deposit" >
                 <label class="form-check-label" for="type1">
                   Deposit
                 </label>
@@ -99,18 +102,13 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Account ID</th>
             <th scope="col">Balance</th>
           </tr>
         </thead>
         <tbody>
-            @php
-                $i = 0;
-            @endphp
             @foreach($result as $key => $value)
                 <tr>
-                    <th scope="row">{{ ++$key }}</th>
                     <td>{{ $value->id}}</td>
                     <td>{{ $value->balance}}</td>
                 </tr>
@@ -121,12 +119,35 @@
         </tbody>
     </table>
     <div class="d-flex justify-content-center">
-        <div class="col-auto">
             {{ $result->links() }}
-        </div>
-
     </div>
+    <div class="mb-5"></div>
     </div>
 
 </body>
+<script>
+$("input:radio").click(function() {
+//getting option clicked value
+    if($(this).val() == "deposit") {
+        //set input enable
+        $("#destination").prop('disabled', false);
+        $("#amount").prop('disabled', false);
+        //set input disable
+        $("#origin").prop('disabled', true);
+    }
+     if($(this).val() == "withdraw") {
+        //set input enable
+        $("#origin").prop('disabled', false);
+        $("#amount").prop('disabled', false);
+        //set input disable
+        $("#destination").prop('disabled', true);
+    }
+     if($(this).val() == "transfer") {
+        //set input enable
+        $("#destination").prop('disabled', false);
+        $("#origin").prop('disabled', false);
+        $("#amount").prop('disabled', false);
+    }
+  });
+</script>
 </html>
