@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->integer('id')->unique()->nullable($value = false);
+            $table->bigIncrements('id')->unique();
             $table->integer('balance');
         });
     }

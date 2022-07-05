@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Services;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Account;
-use Illuminate\Http\Request;
 
 class AccountService
 {
@@ -14,15 +13,25 @@ class AccountService
 
     public function getBalance($accountId)
     {
-        if($accountId) {
-            $accounts = Account::where('id', $accountId)->get();
-            // dd(gettype($result));
-            return response($accounts, 200);
-            // return Account::where('id', $accountId)->get();
-        } else {
-            $accounts = Account::get();
-            return response($accounts, 200);
-        }
+        // $rs = DB::table('accounts')->Simplepaginate(2);
+        // dd($rs);
+
+        // $accounts = Account::get();
+        // dd($accounts);
+        return Account::when(!empty($accountId), function($sql) use ($accountId) {
+            return $sql->where('id', $accountId);
+        })->paginate(4);
+
+
+
+        // // dd($accounts->getCollection());
+        // if($accountId) {
+
+        //     $accounts ->where('id', $accountId);
+        //     return $accounts;
+        // } else {
+        //     return $accounts;
+        // }
     }
 
     public function createAccountBalance($request)
@@ -30,7 +39,6 @@ class AccountService
         $accountDestination = Account::find($request->destination);
         $accountOrigin = Account::find($request->origin);
         if($accountDestination || $accountOrigin) {
-
             if($request->type == "deposit") {
                 if($request->amount) {
                     $accountDestination->balance += $request->amount;

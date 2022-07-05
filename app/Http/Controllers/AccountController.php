@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\AccountService;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreAccountRequest;
 
 class AccountController extends Controller
 {
@@ -14,86 +15,26 @@ class AccountController extends Controller
 
     public function resetAccount()
     {
-        $reset =  $this->accountService->reset();
+        $this->accountService->reset();
+        return redirect('/balance');
 
-        if($reset){
-            $message = ["message"=>"ok"];
-            return response($message, 200);
-        } else {
-            $message = ["message"=>"Not found"];
-            return response($message, 404);
-        }
     }
-
     public function getBalance(Request $request)
     {
-        $result = $this->accountService->getBalance((int)$request->account_id);
-
+        $result = $this->accountService->getBalance($request->account_id);
         if($result) {
-            // dd($result->getContent());
-            if($result->status() == 200) {
-                return view('welcome')->with('result',json_decode($result->getContent()));
-            }
-            // return response($message, 200);
-
+            return view('welcome')->with('result',$result);
         } else {
-            $message = ["message"=>"Not found"];
-            return response($message, 404);
+            return redirect('/balance');
         }
     }
 
-    public function createAccountBalance(Request $request)
+    public function createAccountBalance(StoreAccountRequest  $request)
     {
-
-
         $result = $this->accountService->createAccountBalance($request);
-        if($result) {
-            $account = $result['data'] ?? [];
-            $type = $result['type'] ?? '';
-            $accountTransferOrigin = $result[0] ?? [];
-            $accountTransferDestination = $result[1] ?? [];
 
+            return redirect('/balance');
 
-            if( $type == 'destination'){
-                $message = [
-                    'destination' => [
-                        'id'=>$account->id,
-                        'balance'=>$account->balance
-                        ]
-                    ];
-                return response($message, 201);
-                //201 {"destination": {"id":"100", "balance":10}}
-            } elseif( $type == 'origin'){
-                $message = [
-                    'origin' => [
-                        'id'=>$account->id,
-                        'balance'=>$account->balance
-                        ]
-                    ];
-                return response($message, 201);
-                //201 {"origin": {"id":"100", "balance":15}}
-            } elseif( $request->type == 'transfer'){
-                $message = [
-                    'origin' => [
-                        'id'=>$accountTransferOrigin['data']->id,
-                        'balance'=>$accountTransferOrigin['data']->balance,
-                    ],
-                    'destination' => [
-                        'id'=> $accountTransferDestination['data']->id,
-                        'balance'=> $accountTransferDestination['data']->balance,
-                    ]
-                ];
-                return response($message, 201);
-                //201 {"origin": {"id":"100", "balance":0}, "destination": {"id":"300", "balance":15}}
-            }
-            else {
-                $message = ["message"=>"Not found"];
-                return response($message, 404);
-            }
-        } else {
-            $message = ["message"=>"Not found"];
-            return response($message, 404);
-        }
     }
 
 }
