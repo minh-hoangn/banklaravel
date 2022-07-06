@@ -14,29 +14,42 @@ class AccountController extends Controller
     }
 
     /**Reset data table accounts */
+    /**
+     * @return Illuminate\Support\Facades\Response
+     */
     public function resetAccount()
     {
         $this->accountService->reset();
-        return redirect('/balance');
-
+        return redirect()->back();
     }
 
     /**Get data account return view */
+    /**
+     * @param Request $request
+     *
+     * @return Illuminate\Support\Facades\View
+     */
     public function getBalance(Request $request)
     {
         $result = $this->accountService->getBalance($request->account_id);
         if($result) {
             return view('welcome')->with('result',$result);
-        } else {
-            return redirect('/balance');
         }
+        return view('welcome');
     }
 
     /**Tạo account, nộp tiền, rút tiền, chuyển tiền */
-    public function createAccountBalance(StoreAccountRequest  $request)
+    /**
+     * @param StoreAccountRequest $request
+     *
+     * @return Illuminate\Support\Facades\Response
+     */
+    public function createAccountBalance(StoreAccountRequest $request)
     {
-        $this->accountService->createAccountBalance($request);
-        return redirect('/balance');
+        $result = $this->accountService->createAccountBalance($request);
+        if($result['status'] == 'OK') {
+            return redirect()->back()->with(['dataSuccess' => $result['message']]);
+        }
+        return redirect()->back()->withErrors(['message' => $result['message']]);
     }
-
 }
