@@ -24,12 +24,29 @@ class AccountService
      *
      * @return object
      */
-    public function getBalance($accountId)
+    public function getBalance($keyword, $filter)
     {
-        return Account::when(!empty($accountId), function($sql) use ($accountId) {
-            return $sql->where('id', $accountId);
-        })
-        ->simplePaginate(10);
+        $account = Account::query();
+        if($filter == 1) {
+            return $account->where('balance','>',$keyword)
+            ->simplePaginate(10);
+        }
+        if($filter == 2) {
+            return $account->where('balance','<',$keyword)
+            ->simplePaginate(10);
+        }
+        if($filter == 3) {
+            return $account->where('balance','<=',$keyword)
+            ->simplePaginate(10);
+        }
+        if($filter == 4) {
+            return $account->where('balance','>=',$keyword)
+            ->simplePaginate(10);
+        }
+        if($keyword && empty($filter)) {
+            return $account->where('id', $keyword)->simplePaginate(10);
+        }
+        return Account::simplePaginate(10);
     }
     /**Tạo account với số dư, nộp tiền, rút tiền, chuyển tiền */
     /**
