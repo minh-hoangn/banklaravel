@@ -2,6 +2,8 @@
 
 namespace App\Http\Services;
 use App\Models\Account;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class AccountService
 {
@@ -118,9 +120,14 @@ class AccountService
         $accountOrigin = Account::find($request->origin);
         $accountDestination = Account::find($request->destination);
         if(($accountDestination && $accountOrigin) && $accountOrigin->balance >= $request->amount) {
-            $this->transferAccount($request, $accountOrigin, $accountDestination);
-            $status = 'OK';
-            $message = 'Chuyển tiền thành công';
+            $isSuccess = $this->transferAccount($request, $accountOrigin, $accountDestination);
+            if($isSuccess) {
+                $status = 'OK';
+                $message = 'Transaction chuyển tiền OK';
+            } else {
+                $status = 'FAIL';
+                $message = 'Transaction chuyển tiền FAIL';
+            }
         } else {
             $status = 'FAIL';
             $message = 'Chuyển tiền thất bại';
@@ -140,10 +147,6 @@ class AccountService
         return  Account::create([
             'balance' => $request->amount ?? 0
         ]);
-        // $accountDestination = new Account;
-        // $accountDestination->balance = $request->amount ?? 0;
-        // $accountDestination->save();
-        // return $accountDestination;
     }
     /**Nộp tiền cho account
      * @param StoreAccountRequest $request
@@ -152,8 +155,6 @@ class AccountService
      * @return void
      */
     private function depositAccount($request, $accountDestination)  {
-        // $accountDestination->balance += $request->amount ?? 0;
-        // $accountDestination->save();
         return $accountDestination->update([
             'balance' => $accountDestination->balance + ($request->amount ?? 0)
         ]);
@@ -173,13 +174,20 @@ class AccountService
      * @param Object $accountOrigin
      * @param Object $accountDestination
      *
-     * @return void
+     * @return boolean
      */
     private function transferAccount($request, $accountOrigin, $accountDestination)  {
-        //transaction bỏ vô try catch
-        $accountOrigin->balance -= $request->amount;
-        $accountDestination->balance += $request->amount;
-        $accountOrigin->save();
-        $accountDestination->save();
+        DB::beginTransaction();
+        try {
+            $accountOrigin->balance -= $request->amount;
+            $accountOrigin->save();
+            $accountDestination->balance += $request->amount;
+            $accountDestination->save();
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            return false;
+        }
     }
 }
