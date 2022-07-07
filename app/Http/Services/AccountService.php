@@ -29,7 +29,7 @@ class AccountService
         return Account::when(!empty($accountId), function($sql) use ($accountId) {
             return $sql->where('id', $accountId);
         })
-        ->simplePaginate(5);
+        ->simplePaginate(10);
     }
     /**Tạo account với số dư, nộp tiền, rút tiền, chuyển tiền */
     /**
