@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Services;
+
+use App\Http\Requests\StoreAccountRequest;
 use App\Models\Account;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -58,7 +60,6 @@ class AccountService
     private function depositTransaction($request)
     {
         if(empty($request->destination)) {
-            // dd($this->createAccount($request));
             $account = $this->createAccount($request);
             if ($account) {
                 $status = 'OK';
@@ -124,14 +125,14 @@ class AccountService
             $isSuccess = $this->transferAccount($request, $accountOrigin, $accountDestination);
             if($isSuccess) {
                 $status = 'OK';
-                $message = 'Transaction chuyển tiền OK';
+                $message = 'Giao dịch tiền thành công';
             } else {
                 $status = 'FAIL';
-                $message = 'Transaction chuyển tiền FAIL';
+                $message = 'Giao dịch chuyển tiền thất bại do phát sinh lỗi.';
             }
         } else {
             $status = 'FAIL';
-            $message = 'Chuyển tiền thất bại';
+            $message = 'Giao dịch tiền thất bại';
         }
         return [
             'status' => $status,
@@ -145,7 +146,6 @@ class AccountService
      * @return void
      */
     private function createAccount($request)  {
-        // dd($request->amount);
         return  Account::create([
             'balance' => $request->amount ?? 0
         ]);

@@ -28,8 +28,6 @@ class StoreAccountRequest extends FormRequest
             'origin' => 'nullable|numeric|regex:/^[0-9]+/|min:1|max:9999999999',
             'amount' => 'required|numeric|regex:/^[0-9]+/|min:0|max:99999999999',
             'type' => 'required|string'
-
-
         ];
     }
     public function messages()
