@@ -9,4 +9,5 @@ class Account extends Model
     protected $table = 'accounts';
     public $timestamps = false;
     public $incrementing = false;
+    protected $fillable = ['balance'];
 }

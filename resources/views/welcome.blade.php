@@ -44,7 +44,7 @@
         <hr>
         </hr>
         <form action="{{ route('event') }}" method="post" name="balanceForm" id="balanceForm">
-            {{ csrf_field() }}
+            @csrf
             <div class="form-group row">
                 <label for="destination" class="col-sm-2 col-form-label">Destination</label>
                 <div class="col-sm-10">

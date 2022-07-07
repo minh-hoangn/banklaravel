@@ -58,6 +58,7 @@ class AccountService
     private function depositTransaction($request)
     {
         if(empty($request->destination)) {
+            // dd($this->createAccount($request));
             $account = $this->createAccount($request);
             if ($account) {
                 $status = 'OK';
@@ -144,6 +145,7 @@ class AccountService
      * @return void
      */
     private function createAccount($request)  {
+        // dd($request->amount);
         return  Account::create([
             'balance' => $request->amount ?? 0
         ]);
