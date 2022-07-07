@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAccountRequest;
 use App\Models\Account;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class AccountService
 {
@@ -27,25 +28,30 @@ class AccountService
     public function getBalance($value, $filter)
     {
         $account = Account::query();
-        if($filter == 1) {
-            $account = $account->where('id', 'LIKE', '%' . $value . '%');
+        if(empty($value)) {
+            //no action
+        } else {
+            if($filter == 1) {
+                $account = $account->where('id', 'LIKE', '%' . $value . '%');
+            }
+            if($filter == 2) {
+                $account = $account->where('balance','>',$value);
+            }
+            if($filter == 3) {
+                $account = $account->where('balance','<',$value);
+            }
+            if($filter == 4) {
+                $account = $account->where('balance','<=',$value);
+            }
+            if($filter == 5) {
+                $account = $account->where('balance','>=',$value);
+            }
         }
-        if($filter == 2) {
-            $account = $account->where('balance','>',$value);
+        if($filter && empty($value)) {
+            dd(1);
+            //xử lý required
         }
-        if($filter == 3) {
-            $account = $account->where('balance','<',$value);
-        }
-        if($filter == 4) {
-            $account = $account->where('balance','<=',$value);
-        }
-        if($filter == 5) {
-            $account = $account->where('balance','>=',$value);
-        }
-        if($value && empty($filter)) {
-            return $account->where('id', $value)->simplePaginate(10);
-        }
-        return $account->simplePaginate(10);
+        return $account->simplePaginate(10)->appends(request()->input());
     }
     /**Tạo account với số dư, nộp tiền, rút tiền, chuyển tiền */
     /**
@@ -71,7 +77,7 @@ class AccountService
     /**
      * @param StoreAccountRequest $request
      *
-     * @return array message
+     * @return array $message
      */
     private function depositTransaction($request)
     {

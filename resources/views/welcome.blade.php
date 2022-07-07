@@ -135,174 +135,179 @@
         <thead>
             <tr>
                 <th>Account ID</th>
-                <th>Balance</thscope=>
+                <th>Balance</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
         <tbody>
+            @if (isset($result))
             @foreach ($result as $key => $value)
-                <tr>
+            <tr>
+                @if (isset($value->id) && isset($value->balance))
                     <td>{{ $value->id }}</td>
                     <td>{{ $value->balance }}</td>
-                    <td>
-                        <!--  Nạp tài khoản  -->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#depositAccount{{ $value->id }}">
-                            Deposit
-                        </button>
+                @endif
+                <td>
+                    <!--  Nạp tài khoản  -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#depositAccount{{ $value->id }}">
+                        Deposit
+                    </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="depositAccount{{ $value->id }}" tabindex="-1"
-                            aria-labelledby="depositAccountLabel{{ $value->id }}" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="depositAccounttLabel{{ $value->id }}">Deposit
-                                            from
-                                            Account ID: {{ $value->id }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ route('event') }}" method="post"
-                                            name="balanceFormDeposit{{ $value->id }}"
-                                            id="balanceFormDeposit{{ $value->id }}">
-                                            @csrf
-                                            <div class="form-group row">
-                                                <label for="amount" class="col-sm-2 col-form-label">Amount</label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control" name="amount"
-                                                        id="amount" placeholder="Amount" min="0"
-                                                        max="99999999999">
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="type" id="deposit" value="deposit">
-                                            <input type="hidden" name="destination" id="destination"
-                                                value="{{ $value->id }}">
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
+                    <!-- Modal -->
+                    <div class="modal fade" id="depositAccount{{ $value->id }}" tabindex="-1"
+                        aria-labelledby="depositAccountLabel{{ $value->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="depositAccounttLabel{{ $value->id }}">Deposit
+                                        from
+                                        Account ID: {{ $value->id }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('event') }}" method="post"
+                                        name="balanceFormDeposit{{ $value->id }}"
+                                        id="balanceFormDeposit{{ $value->id }}">
+                                        @csrf
+                                        <div class="form-group row">
+                                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" class="form-control" name="amount"
+                                                    id="amount" placeholder="Amount" min="0"
+                                                    max="99999999999">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="type" id="deposit" value="deposit">
+                                        <input type="hidden" name="destination" id="destination"
+                                            value="{{ $value->id }}">
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
-                        <!--  end Nạp tài khoản  -->
-                    </td>
-                    <td>
-                        <!--  Rút tài khoản  -->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#withdrawAccount{{ $value->id }}">
-                            Withdraw
-                        </button>
+                    </div>
+                    <!--  end Nạp tài khoản  -->
+                </td>
+                <td>
+                    <!--  Rút tài khoản  -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#withdrawAccount{{ $value->id }}">
+                        Withdraw
+                    </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="withdrawAccount{{ $value->id }}" tabindex="-1"
-                            aria-labelledby="withdrawAccountLabel{{ $value->id }}" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="withdrawAccountLabel{{ $value->id }}">Withdraw
-                                            from
-                                            Account ID: {{ $value->id }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ route('event') }}" method="post"
-                                            name="balanceFormWithdraw{{ $value->id }}"
-                                            id="balanceFormWithdraw{{ $value->id }}">
-                                            @csrf
-                                            <div class="form-group row">
-                                                <label for="amount" class="col-sm-2 col-form-label">Amount</label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control" name="amount"
-                                                        id="amount" placeholder="Amount" min="0"
-                                                        max="99999999999">
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="type" id="withdraw" value="withdraw">
-                                            <input type="hidden" name="origin" id="origin"
-                                                value="{{ $value->id }}">
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
+                    <!-- Modal -->
+                    <div class="modal fade" id="withdrawAccount{{ $value->id }}" tabindex="-1"
+                        aria-labelledby="withdrawAccountLabel{{ $value->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="withdrawAccountLabel{{ $value->id }}">Withdraw
+                                        from
+                                        Account ID: {{ $value->id }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('event') }}" method="post"
+                                        name="balanceFormWithdraw{{ $value->id }}"
+                                        id="balanceFormWithdraw{{ $value->id }}">
+                                        @csrf
+                                        <div class="form-group row">
+                                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" class="form-control" name="amount"
+                                                    id="amount" placeholder="Amount" min="0"
+                                                    max="99999999999">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="type" id="withdraw" value="withdraw">
+                                        <input type="hidden" name="origin" id="origin"
+                                            value="{{ $value->id }}">
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
-                        <!--  end Rút tài khoản  -->
-                    </td>
-                    <td>
-                        <!--  Chuyển tiền tài khoản  -->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#transferAccount{{ $value->id }}">
-                            Transfer
-                        </button>
+                    </div>
+                    <!--  end Rút tài khoản  -->
+                </td>
+                <td>
+                    <!--  Chuyển tiền tài khoản  -->
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#transferAccount{{ $value->id }}">
+                        Transfer
+                    </button>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="transferAccount{{ $value->id }}" tabindex="-1"
-                            aria-labelledby="transferAccountLabel{{ $value->id }}" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="transferAccountLabel{{ $value->id }}">Transfer
-                                            from
-                                            Account ID: {{ $value->id }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ route('event') }}" method="post"
-                                            name="balanceFormTransfer{{ $value->id }}"
-                                            id="balanceFormTransfer{{ $value->id }}">
-                                            @csrf
-                                            <div class="form-group row">
-                                                <label for="destination"
-                                                    class="col-sm-2 col-form-label">Destination</label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control" name="destination"
-                                                        id="destination" placeholder="Destination" min="1"
-                                                        max="99999999999999999999">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="amount" class="col-sm-2 col-form-label">Amount</label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control" name="amount"
-                                                        id="amount" placeholder="Amount" min="0"
-                                                        max="99999999999">
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="type" id="transfer" value="transfer">
-                                            <input type="hidden" name="origin" id="origin"
-                                                value="{{ $value->id }}">
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
+                    <!-- Modal -->
+                    <div class="modal fade" id="transferAccount{{ $value->id }}" tabindex="-1"
+                        aria-labelledby="transferAccountLabel{{ $value->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="transferAccountLabel{{ $value->id }}">Transfer
+                                        from
+                                        Account ID: {{ $value->id }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('event') }}" method="post"
+                                        name="balanceFormTransfer{{ $value->id }}"
+                                        id="balanceFormTransfer{{ $value->id }}">
+                                        @csrf
+                                        <div class="form-group row">
+                                            <label for="destination"
+                                                class="col-sm-2 col-form-label">Destination</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" class="form-control" name="destination"
+                                                    id="destination" placeholder="Destination" min="1"
+                                                    max="99999999999999999999">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="amount" class="col-sm-2 col-form-label">Amount</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" class="form-control" name="amount"
+                                                    id="amount" placeholder="Amount" min="0"
+                                                    max="99999999999">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="type" id="transfer" value="transfer">
+                                        <input type="hidden" name="origin" id="origin"
+                                            value="{{ $value->id }}">
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
-                        <!--  end Chuyển tiền tài khoản  -->
-                    </td>
-                </tr>
-            @endforeach
+                    </div>
+                    <!--  end Chuyển tiền tài khoản  -->
+                </td>
+            </tr>
+        @endforeach
+            @endif
+
         </tbody>
     </table>
     <div class="d-flex justify-content-center">
@@ -351,6 +356,18 @@
             $("#destination").prop('required', true);
             $("#origin").prop('required', true);
             $("#amount").prop('required', true);
+        }
+    });
+
+    $("#filter").click(function() {
+        let option =$(this).val();
+        //getting option clicked value
+        if (option == "") {
+            //set input no required
+            $("#value").prop('required', false);
+        } else {
+            //set input  required
+            $("#value").prop('required', true);
         }
     });
 </script>
