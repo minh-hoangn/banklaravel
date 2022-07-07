@@ -31,7 +31,7 @@ class AccountController extends Controller
      */
     public function getBalance(Request $request)
     {
-        $result = $this->accountService->getBalance($request->keyword, $request->filter);
+        $result = $this->accountService->getBalance($request->value, $request->filter);
         if($result) {
             return view('welcome')->with('result',$result);
         }

@@ -20,33 +20,32 @@ class AccountService
 
     /**Lấy thông tin account và số dư */
     /**
-     * @param int $accountId
+     * @param int $value, $filter
      *
      * @return object
      */
-    public function getBalance($keyword, $filter)
+    public function getBalance($value, $filter)
     {
         $account = Account::query();
         if($filter == 1) {
-            return $account->where('balance','>',$keyword)
-            ->simplePaginate(10);
+            $account = $account->where('id', 'LIKE', '%' . $value . '%');
         }
         if($filter == 2) {
-            return $account->where('balance','<',$keyword)
-            ->simplePaginate(10);
+            $account = $account->where('balance','>',$value);
         }
         if($filter == 3) {
-            return $account->where('balance','<=',$keyword)
-            ->simplePaginate(10);
+            $account = $account->where('balance','<',$value);
         }
         if($filter == 4) {
-            return $account->where('balance','>=',$keyword)
-            ->simplePaginate(10);
+            $account = $account->where('balance','<=',$value);
         }
-        if($keyword && empty($filter)) {
-            return $account->where('id', $keyword)->simplePaginate(10);
+        if($filter == 5) {
+            $account = $account->where('balance','>=',$value);
         }
-        return Account::simplePaginate(10);
+        if($value && empty($filter)) {
+            return $account->where('id', $value)->simplePaginate(10);
+        }
+        return $account->simplePaginate(10);
     }
     /**Tạo account với số dư, nộp tiền, rút tiền, chuyển tiền */
     /**

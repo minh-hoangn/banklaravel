@@ -104,21 +104,32 @@
     <form action="/balance" method="get">
         <div class="row">
             <div class="col">
+                @php
+                    $filter = $_GET['filter'] ?? '';
+                    $value = $_GET['value'] ?? '';
+
+                @endphp
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="filter" id="filter">
-                    <option value="" selected>--Chọn--</option>
-                    <option value="1">Chọn tiền ></option>
-                    <option value="2">Chọn tiền <</option>
-                    <option value="3">Chọn tiền < hoặc =</option>
-                    <option value="4">Chọn tiền > hoặc =</option>
+                    @if(isset($_GET['filter']) && isset($_GET['value']))
+
+                    @endif
+                    <option
+                    value="" {{ $filter == '' ? 'selected' : '' }} >--Chọn--</option>
+                    <option value="1" {{ $filter == 1 ? 'selected' : '' }}>Chọn Account ID</option>
+                    <option value="2" {{ $filter == 2 ? 'selected' : '' }}>Chọn tiền ></option>
+                    <option value="3" {{ $filter == 3 ? 'selected' : '' }}>Chọn tiền <</option>
+                    <option value="4" {{ $filter == 4 ? 'selected' : '' }}>Chọn tiền < hoặc =</option>
+                    <option value="5" {{ $filter == 5 ? 'selected' : '' }}>Chọn tiền > hoặc =</option>
                 </select>
             </div>
             <div class="col">
-                <input type="text" class="form-control" name="keyword" id="keyword" placeholder="Search">
+                <input type="text" class="form-control" name="value" value="{{ $value }}" id="value" placeholder="Search">
             </div>
             <button type="submit" class="btn btn-primary col-sm-2">Search</button>
         </div>
     </form>
-
+    {{--  @dd($_SERVER["REQUEST_URI"])  --}}
+    {{--  @dd($_GET['value'])  --}}
 
     <table class="table text-center">
         <thead>
