@@ -3,10 +3,11 @@
 namespace App\Http\Services;
 
 use App\Http\Requests\StoreAccountRequest;
+use App\Http\Requests\SearchRequest;
+
 use App\Models\Account;
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 
 class AccountService
 {
@@ -47,10 +48,10 @@ class AccountService
                 $account = $account->where('balance','>=',$value);
             }
         }
-        if($filter && empty($value)) {
-            dd(1);
-            //xử lý required
-        }
+        // if($filter && empty($value)) {
+        //     dd(1);
+        //     //xử lý required
+        // }
         return $account->simplePaginate(10)->appends(request()->input());
     }
     /**Tạo account với số dư, nộp tiền, rút tiền, chuyển tiền */

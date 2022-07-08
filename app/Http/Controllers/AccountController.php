@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Services\AccountService;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreAccountRequest;
-
+use App\Http\Requests\SearchRequest;
 class AccountController extends Controller
 {
     public function __construct(AccountService $accountService)
@@ -29,7 +29,7 @@ class AccountController extends Controller
      *
      * @return Illuminate\Support\Facades\View
      */
-    public function getBalance(Request $request)
+    public function getBalance(SearchRequest $request)
     {
         $result = $this->accountService->getBalance($request->value, $request->filter);
         if($result) {

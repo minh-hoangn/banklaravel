@@ -124,6 +124,9 @@
             </div>
             <div class="col">
                 <input type="text" class="form-control" name="value" value="{{ $value }}" id="value" placeholder="Search">
+                @error('value')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <button type="submit" class="btn btn-primary col-sm-2">Search</button>
         </div>
@@ -359,7 +362,7 @@
         }
     });
 
-    $("#filter").click(function() {
+    {{--  $("#filter").click(function() {
         let option =$(this).val();
         //getting option clicked value
         if (option == "") {
@@ -369,7 +372,7 @@
             //set input  required
             $("#value").prop('required', true);
         }
-    });
+    });  --}}
 </script>
 
 </html>
